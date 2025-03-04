@@ -1,0 +1,9 @@
+main: org.jonathanclark.cybot_plugin.spigot.CyBot
+name: CyBot
+version: 1.0
+authors: [RAHVLN]
+website: github.com/clarkrjonathan
+
+commands:
+    initClient:
+        
