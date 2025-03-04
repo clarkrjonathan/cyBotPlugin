@@ -44,9 +44,9 @@ public class Client {
 	 * @param b - byte to be sent
 	 * @throws IOException 
 	 */
-	public boolean sendByte(byte b) throws IOException {
+	public byte sendByte(byte b) throws IOException {
 		out.write(b);
-		return true;
+		return b;
 	}
 	
 	/**
@@ -55,17 +55,22 @@ public class Client {
 	 * @param echo - if true wait for echo
 	 * @throws IOException 
 	 */
-	public boolean sendByte(byte b, boolean echo) throws IOException {
+	public byte sendByte(byte b, boolean echo) throws IOException {
 		
 		//TODO add timeout
 		if(echo) {
-			sendByte(b);
-			while(in.read() == -1) {};
+			out.write(b);
+			int received;
+			received = in.read();
+			while(received == -1) {
+				received = in.read();
+			};
+			return (byte) received;
 		} else {
 			sendByte(b);
 		}
 		
-		return true;
+		return b;
 	}
 	
 	/**
@@ -82,7 +87,7 @@ public class Client {
 	 * @throws IOException 
 	 */
 	public boolean checkStatus() throws IOException {
-		return sendByte((byte) 'J');
+		return sendByte((byte) 'J') == (byte) 'J';
 	}
 	
 

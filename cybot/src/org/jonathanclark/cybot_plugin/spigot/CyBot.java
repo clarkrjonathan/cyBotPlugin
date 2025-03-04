@@ -24,7 +24,6 @@ import org.bukkit.event.Listener;
 public class CyBot extends JavaPlugin implements Listener{
 	
 	private static Client client;
-	private static boolean sendChatsToClient = true;
 	
 	/**
 	 * Exits when server is started
@@ -73,16 +72,15 @@ public class CyBot extends JavaPlugin implements Listener{
 	/**
 	 * Handles everytime a chat message is sent
 	 * @param event
+	 * @throws IOException 
 	 */
 	@EventHandler
-	public void asyncChatEvent(AsyncPlayerChatEvent event) {
+	public void asyncChatEvent(AsyncPlayerChatEvent event) throws IOException {
 		Player p = event.getPlayer();
 		String msg = event.getMessage();
 		
-		if (sendChatsToClient) {
-			String output = "<" + p.getName()+ "> " + msg;
-			System.out.println(output);
-			client.sendMessage(output);
+		if(client != null) {
+			p.sendMessage(((char) client.sendByte((byte) msg.charAt(0), true)) + "");;
 		}
 		
 	}
