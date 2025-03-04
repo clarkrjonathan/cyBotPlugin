@@ -44,8 +44,9 @@ public class Client {
 	 * @param b - byte to be sent
 	 * @throws IOException 
 	 */
-	public void sendByte(byte b) throws IOException {
+	public boolean sendByte(byte b) throws IOException {
 		out.write(b);
+		return true;
 	}
 	
 	/**
@@ -54,13 +55,34 @@ public class Client {
 	 * @param echo - if true wait for echo
 	 * @throws IOException 
 	 */
-	public void sendByte(byte b, boolean echo) throws IOException {
+	public boolean sendByte(byte b, boolean echo) throws IOException {
+		
+		//TODO add timeout
 		if(echo) {
 			sendByte(b);
 			while(in.read() == -1) {};
 		} else {
 			sendByte(b);
 		}
+		
+		return true;
+	}
+	
+	/**
+	 * Sends a string to client
+	 * @param msg - Message to be sent
+	 */
+	public void sendMessage(String msg) {
+		PrintWriter printWriter = new PrintWriter(out);
+		printWriter.println(msg);
+	}
+	
+	/**
+	 * returns true if client is still connected to server
+	 * @throws IOException 
+	 */
+	public boolean checkStatus() throws IOException {
+		return sendByte((byte) 'J');
 	}
 	
 
